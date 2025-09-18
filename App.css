@@ -51,11 +51,15 @@ html, body {
   width: 80px;
   height: 80px;
   margin-bottom: 10px;
-   transform: scale(1.1);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
   border-radius: 8px;
+  transition: transform 0.3s, box-shadow 0.3s, filter 0.3s;
 }
 
+.table-card img:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+}
 
 .reservation-form {
   margin-top: 30px;
@@ -162,7 +166,6 @@ html, body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
 .menu-btn:hover {
@@ -177,7 +180,6 @@ html, body {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
 .qty-btn:hover {
