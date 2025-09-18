@@ -1,45 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const Payment = ({ order, onPayment }) => {
-  const [paymentMethod, setPaymentMethod] = useState('');
+function Payment({ order, onPayment }) {
+  const [method, setMethod] = useState("");
 
   const calculateTotal = () => {
-    return order.reduce((total, item) => total + item.price, 0).toFixed(2);
+    return order.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2);
   };
 
-  const handlePayment = () => {
-    if (paymentMethod) {
-      alert(`Payment of $${calculateTotal()} made successfully using ${paymentMethod}`);
-      onPayment({
-        method: paymentMethod,
-        paymentAmount: calculateTotal(),
-      });
-      setPaymentMethod('');
-    } else {
-      alert('Please select a payment method.');
+  const handlePay = () => {
+    if (!method) {
+      alert("Please select a payment method.");
+      return;
     }
+    alert(`Payment successful via ${method}!`);
+    onPayment();
   };
 
   return (
-    <div>
+    <div style={{ marginTop: "20px" }}>
       <h2>Payment</h2>
-      <p><strong>Total Amount: ${calculateTotal()}</strong></p>
-      <label>Select Payment Method:</label>
+      <p>Total Amount: ${calculateTotal()}</p>
       <select
-        value={paymentMethod}
-        onChange={(e) => setPaymentMethod(e.target.value)}
+        value={method}
+        onChange={(e) => setMethod(e.target.value)}
+        style={{
+          padding: "10px",
+          marginBottom: "10px",
+          borderRadius: "6px",
+          border: "1px solid #ccc"
+        }}
       >
-        <option value="">Choose a method</option>
-        <option value="Credit Card">Credit Card</option>
+        <option value="">Select Payment Method</option>
+        <option value="Card">Card</option>
         <option value="Cash">Cash</option>
         <option value="UPI">UPI</option>
       </select>
       <br />
-      <button onClick={handlePayment} disabled={!paymentMethod}>
-        Pay Now
-      </button>
+      <button onClick={handlePay} style={payButtonStyle}>Pay Now</button>
     </div>
   );
+}
+
+const payButtonStyle = {
+  padding: "10px 15px",
+  backgroundColor: "#4CAF50",
+  color: "#fff",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer",
+  fontWeight: "bold",
 };
 
 export default Payment;
