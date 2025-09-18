@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import tableImage from './images.png';
+import './App.css';
 
 function ReservationSystem({ onReserve }) {
   const [tables, setTables] = useState([
@@ -14,75 +16,101 @@ function ReservationSystem({ onReserve }) {
     { id: 10, seats: 5 },
   ]);
 
-  const [selectedTable, setSelectedTable] = useState('');
+  const [reservations, setReservations] = useState([]);
+  const [selectedTable, setSelectedTable] = useState(null);
   const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
   const [seatsToReserve, setSeatsToReserve] = useState(1);
+
+  const handleTableSelect = (tableId) => {
+    setSelectedTable(tableId);
+  };
+
+  const checkOverlap = (start1, end1, start2, end2) => {
+    return start1 < end2 && start2 < end1;
+  };
 
   const handleReserve = () => {
     if (!selectedTable) {
       alert('Please select a table');
       return;
     }
-    if (!date || !time) {
-      alert('Please enter both date and time before reserving a table');
+    if (!date || !startTime || !endTime) {
+      alert('Please enter date, start time, and end time');
+      return;
+    }
+    if (endTime <= startTime) {
+      alert('End time must be after start time');
       return;
     }
 
-    const table = tables.find((t) => t.id === parseInt(selectedTable));
+    const selectedStart = new Date(`${date}T${startTime}`);
+    const now = new Date();
+    if (selectedStart < now) {
+      alert('Cannot book a table in the past');
+      return;
+    }
 
+    const alreadyReserved = reservations.some(
+      (r) =>
+        r.tableId === selectedTable &&
+        r.date === date &&
+        checkOverlap(startTime, endTime, r.startTime, r.endTime)
+    );
+
+    if (alreadyReserved) {
+      alert(`Table ${selectedTable} is already booked between ${startTime} and ${endTime} on ${date}`);
+      return;
+    }
+
+    const table = tables.find((t) => t.id === selectedTable);
     if (seatsToReserve > table.seats) {
       alert(`Only ${table.seats} seats are available for this table`);
       return;
     }
 
     const updatedTables = tables.map((t) =>
-      t.id === parseInt(selectedTable)
-        ? { ...t, seats: t.seats - seatsToReserve }
-        : t
+      t.id === selectedTable ? { ...t, seats: t.seats - seatsToReserve } : t
     );
-
     setTables(updatedTables);
 
     const reservation = {
       tableId: selectedTable,
       date,
-      time,
+      startTime,
+      endTime,
       seats: seatsToReserve,
     };
 
+    setReservations([...reservations, reservation]);
     onReserve(reservation);
 
-    setSelectedTable('');
+    setSelectedTable(null);
     setDate('');
-    setTime('');
+    setStartTime('');
+    setEndTime('');
     setSeatsToReserve(1);
   };
 
   return (
     <div>
       <h2>Table Reservation</h2>
+      <div className="reservation-grid">
+        {tables.map((table) => (
+          <div
+            key={table.id}
+            className={`table ${selectedTable === table.id ? 'reserved' : ''} ${table.seats === 0 ? 'reserved' : ''}`}
+            onClick={() => table.seats > 0 && handleTableSelect(table.id)}
+          >
+            <img src={tableImage} alt={`Table ${table.id}`} className="table-image" />
+            <p>Table {table.id}</p>
+          </div>
+        ))}
+      </div>
+
       <label>
-        Select Table:{' '}
-        <select
-          value={selectedTable}
-          onChange={(e) => setSelectedTable(e.target.value)}
-        >
-          <option value="">--Select--</option>
-          {tables.map((table) => (
-            <option
-              key={table.id}
-              value={table.id}
-              disabled={table.seats === 0}
-            >
-              Table {table.id} 
-            </option>
-          ))}
-        </select>
-      </label>
-      <br />
-      <label>
-        Number of Seats:{' '}
+        Number of Seats:
         <input
           type="number"
           min="1"
@@ -92,38 +120,26 @@ function ReservationSystem({ onReserve }) {
         />
       </label>
       <br />
+
       <label>
-        Select Date:{' '}
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
+        Select Date:
+        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
       </label>
       <br />
+
       <label>
-        Select Time:{' '}
-        <input
-          type="time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-        />
+        From Time:
+        <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
       </label>
       <br />
-      <button
-        style={{
-          color: 'white',
-          backgroundColor: 'black',
-          marginTop: '10px',
-          padding: '8px 12px',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-        }}
-        onClick={handleReserve}
-      >
-        Reserve Table
-      </button>
+
+      <label>
+        Till Time:
+        <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+      </label>
+      <br />
+
+      <button onClick={handleReserve}>Reserve Table</button>
     </div>
   );
 }
