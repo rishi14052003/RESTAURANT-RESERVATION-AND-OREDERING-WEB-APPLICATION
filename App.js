@@ -7,13 +7,13 @@ import './App.css';
 
 function App() {
   const [reservedTable, setReservedTable] = useState(null);
-  const [reservations, setReservations] = useState([]); // keep history
+  const [reservations, setReservations] = useState([]);
   const [order, setOrder] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState(null);
 
   const handleReservation = (reservation) => {
     setReservedTable(reservation);
-    setReservations((prev) => [...prev, reservation]); // add to history
+    setReservations((prev) => [...prev, reservation]);
   };
 
   const handleOrderChange = (newOrder) => {
@@ -22,14 +22,13 @@ function App() {
 
   const handlePayment = (payment) => {
     setPaymentMethod(payment);
+    setOrder([]);
   };
 
   return (
     <div className="App">
       <h1>Restaurant Reservation & Ordering Application</h1>
-
       <ReservationSystem onReserve={handleReservation} />
-
       {reservedTable && (
         <>
           <OrderSystem
@@ -40,14 +39,12 @@ function App() {
           <Payment order={order} onPayment={handlePayment} />
         </>
       )}
-
       {paymentMethod && (
         <p>
           Payment completed using: {paymentMethod.method} ($
           {paymentMethod.paymentAmount})
         </p>
       )}
-
       <TableHistory reservations={reservations} />
     </div>
   );
