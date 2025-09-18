@@ -1,147 +1,99 @@
-import React, { useState } from 'react';
-import tableImage from './images.png';
-import './App.css';
+import React, { useState } from "react";
+import tableImg from "./images.png";
 
-function ReservationSystem({ onReserve }) {
-  const [tables, setTables] = useState([
-    { id: 1, seats: 5 },
-    { id: 2, seats: 5 },
-    { id: 3, seats: 5 },
-    { id: 4, seats: 5 },
-    { id: 5, seats: 5 },
-    { id: 6, seats: 5 },
-    { id: 7, seats: 5 },
-    { id: 8, seats: 5 },
-    { id: 9, seats: 5 },
-    { id: 10, seats: 5 },
-  ]);
-
-  const [reservations, setReservations] = useState([]);
-  const [selectedTable, setSelectedTable] = useState(null);
-  const [date, setDate] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [seatsToReserve, setSeatsToReserve] = useState(1);
-
-  const handleTableSelect = (tableId) => {
-    setSelectedTable(tableId);
-  };
-
-  const checkOverlap = (start1, end1, start2, end2) => {
-    return start1 < end2 && start2 < end1;
-  };
+function ReservationSystem({ reservations, onReserve }) {
+  const [name, setName] = useState("");
+  const [tableNumber, setTableNumber] = useState("");
+  const [date, setDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
 
   const handleReserve = () => {
-    if (!selectedTable) {
-      alert('Please select a table');
+    if (!name || !tableNumber || !date || !startTime || !endTime) {
+      alert("Please fill all fields");
       return;
     }
-    if (!date || !startTime || !endTime) {
-      alert('Please enter date, start time, and end time');
+    const reservationDateTime = new Date(`${date}T${startTime}`);
+    if (reservationDateTime < new Date()) {
+      alert("You cannot reserve a table in the past!");
       return;
     }
-    if (endTime <= startTime) {
-      alert('End time must be after start time');
-      return;
-    }
-
-    const selectedStart = new Date(`${date}T${startTime}`);
-    const now = new Date();
-    if (selectedStart < now) {
-      alert('Cannot book a table in the past');
-      return;
-    }
-
-    const alreadyReserved = reservations.some(
-      (r) =>
-        r.tableId === selectedTable &&
-        r.date === date &&
-        checkOverlap(startTime, endTime, r.startTime, r.endTime)
-    );
-
-    if (alreadyReserved) {
-      alert(`Table ${selectedTable} is already booked between ${startTime} and ${endTime} on ${date}`);
-      return;
-    }
-
-    const table = tables.find((t) => t.id === selectedTable);
-    if (seatsToReserve > table.seats) {
-      alert(`Only ${table.seats} seats are available for this table`);
-      return;
-    }
-
-    const updatedTables = tables.map((t) =>
-      t.id === selectedTable ? { ...t, seats: t.seats - seatsToReserve } : t
-    );
-    setTables(updatedTables);
-
-    const reservation = {
-      tableId: selectedTable,
-      date,
-      startTime,
-      endTime,
-      seats: seatsToReserve,
-    };
-
-    setReservations([...reservations, reservation]);
-    onReserve(reservation);
-
-    setSelectedTable(null);
-    setDate('');
-    setStartTime('');
-    setEndTime('');
-    setSeatsToReserve(1);
+    onReserve({ name, tableNumber, date, startTime, endTime });
+    setName("");
+    setTableNumber("");
+    setDate("");
+    setStartTime("");
+    setEndTime("");
   };
 
   return (
     <div>
-      <h2>Table Reservation</h2>
-      <div className="reservation-grid">
-        {tables.map((table) => (
-          <div
-            key={table.id}
-            className={`table ${selectedTable === table.id ? 'reserved' : ''} ${table.seats === 0 ? 'reserved' : ''}`}
-            onClick={() => table.seats > 0 && handleTableSelect(table.id)}
-          >
-            <img src={tableImage} alt={`Table ${table.id}`} className="table-image" />
-            <p>Table {table.id}</p>
+      <h2>Reserve a Table</h2>
+      <div style={{ display: "flex", justifyContent: "center", gap: "15px", marginBottom: "20px" }}>
+        {[...Array(5)].map((_, i) => (
+          <div key={i + 1} style={tableCardStyle}>
+            <img src={tableImg} alt={`Table ${i + 1}`} style={tableImgStyle} />
+            <p>Table {i + 1}</p>
           </div>
         ))}
       </div>
-
-      <label>
-        Number of Seats:
-        <input
-          type="number"
-          min="1"
-          max="5"
-          value={seatsToReserve}
-          onChange={(e) => setSeatsToReserve(parseInt(e.target.value))}
-        />
-      </label>
-      <br />
-
-      <label>
-        Select Date:
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-      </label>
-      <br />
-
-      <label>
-        Start Time:
-        <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-      </label>
-      <br />
-
-      <label>
-        End Time:
-        <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
-      </label>
-      <br />
-
-      <button onClick={handleReserve}>Reserve Table</button>
+      <div style={{ display: "flex", justifyContent: "center", gap: "15px", marginBottom: "20px" }}>
+        {[...Array(5)].map((_, i) => (
+          <div key={i + 6} style={tableCardStyle}>
+            <img src={tableImg} alt={`Table ${i + 6}`} style={tableImgStyle} />
+            <p>Table {i + 6}</p>
+          </div>
+        ))}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+        <input type="text" placeholder="Customer Name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
+        <select value={tableNumber} onChange={(e) => setTableNumber(e.target.value)} style={inputStyle}>
+          <option value="">Select Table</option>
+          {[...Array(10)].map((_, i) => (
+            <option key={i + 1} value={i + 1}>Table {i + 1}</option>
+          ))}
+        </select>
+        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} style={inputStyle} />
+        <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} style={inputStyle} />
+        <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} style={inputStyle} />
+        <button onClick={handleReserve} style={buttonStyle}>Reserve</button>
+      </div>
     </div>
   );
 }
+
+const tableCardStyle = {
+  border: "1px solid #ccc",
+  borderRadius: "8px",
+  padding: "10px",
+  width: "100px",
+  textAlign: "center",
+  background: "#fff",
+  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+};
+
+const tableImgStyle = {
+  display: "block",
+  margin: "auto",
+  width: "80px",
+  height: "80px",
+};
+
+const inputStyle = {
+  padding: "10px",
+  width: "220px",
+  border: "1px solid #ccc",
+  borderRadius: "6px",
+};
+
+const buttonStyle = {
+  padding: "10px 15px",
+  backgroundColor: "#4CAF50",
+  color: "#fff",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer",
+  fontWeight: "bold",
+};
 
 export default ReservationSystem;
