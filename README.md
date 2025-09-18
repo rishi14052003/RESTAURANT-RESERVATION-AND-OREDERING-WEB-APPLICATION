@@ -1,70 +1,99 @@
-# Getting Started with Create React App
+🍽️ Restaurant Reservation & Ordering Web Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack React-based restaurant application that allows customers to reserve tables, browse menus, place food orders, and complete payments online. The system also provides a reservation history and order summary for smooth restaurant management.
 
-## Available Scripts
+🚀 Features
 
-In the project directory, you can run:
+Table Reservation
 
-### `npm start`
+Select table, seats, date, and time.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Prevents overbooking with seat availability validation.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Menu & Ordering System
 
-### `npm test`
+Organized by categories (Starters, Main Course, Desserts, Beverages, Specials).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Add or remove items from the cart.
 
-### `npm run build`
+Displays order summary with total bill.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Payment Integration
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Supports Credit Card, Cash, and UPI.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Real-time total amount calculation.
 
-### `npm run eject`
+Reservation History
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Track past reservations in a history log.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Responsive UI
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Simple, user-friendly interface built with React and styled with CSS.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+🛠️ Tech Stack
 
-## Learn More
+Frontend: React (useState, functional components)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Styling: CSS (custom styling for layout & responsiveness)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+State Management: React Hooks
 
-### Code Splitting
+📂 Project Structure
+📦 restaurant-app
+ ┣ 📜 App.js              # Main app container
+ ┣ 📜 ReservationSystem.js # Handles table reservations
+ ┣ 📜 Menu.js              # Menu & ordering system
+ ┣ 📜 Payment.js           # Payment functionality
+ ┣ 📜 TableHistory.js      # Displays reservation history
+ ┣ 📜 App.css              # Styling
+ ┗ 📜 index.js             # React entry point
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+⚡ Installation & Setup
 
-### Analyzing the Bundle Size
+Clone the repository
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+git clone https://github.com/your-username/restaurant-app.git
+cd restaurant-app
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Install dependencies
 
-### Advanced Configuration
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+Start the development server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+npm start
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Open in browser
+
+http://localhost:3000
+
+🎯 Usage
+
+Reserve a table by selecting table number, seats, date & time.
+
+Browse the menu and add items to your order.
+
+View order summary and total amount.
+
+Complete payment using your preferred method.
+
+View past reservations in the history section.
+
+📸 Screenshots (Optional)
+
+You can add screenshots of the UI here for better presentation.
+
+📝 Future Enhancements
+
+User authentication (Login/Signup)
+
+Backend integration with database (Node.js/Express + MongoDB)
+
+Real-time availability with WebSockets
+
+Order tracking system
