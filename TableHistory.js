@@ -3,7 +3,7 @@ import React from "react";
 function TableHistory({ reservations, onTableClick }) {
   return (
     <div>
-      <h2>Reservation History</h2>
+      <h3>Reservation History</h3>
       <ul style={{ listStyle: "none", padding: 0 }}>
         {reservations.map((res, index) => (
           <li
