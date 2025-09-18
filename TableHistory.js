@@ -1,22 +1,38 @@
-import React from "react";
+import React from 'react';
 
-const TableHistory = ({ reservations }) => {
+function TableHistory({ reservations }) {
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-GB'); // dd/mm/yyyy
+  };
+
   return (
-    <div>
+    <div className="history-section" style={{ textAlign: 'center' }}>
       <h2>Reservation History</h2>
       {reservations.length === 0 ? (
         <p>No reservations yet.</p>
       ) : (
-        <ul>
+        <ul style={{ listStyleType: 'none', padding: 0 }}>
           {reservations.map((res, index) => (
-            <li key={index}>
-              Table <b>{res.tableId}</b> reserved on <b>{res.date}</b> at <b>{res.time}</b>
+            <li
+              key={index}
+              style={{
+                background: '#eaf5ea',
+                border: '2px solid #4CAF50',
+                borderRadius: '8px',
+                padding: '8px',
+                margin: '8px auto',
+                maxWidth: '500px',
+                fontWeight: '500',
+              }}
+            >
+              Table {res.tableId} | {formatDate(res.date)} | {res.startTime} - {res.endTime} | Seats: {res.seats}
             </li>
           ))}
         </ul>
       )}
     </div>
   );
-};
+}
 
 export default TableHistory;
