@@ -51,7 +51,11 @@ function App() {
     <>
       <div className={`App ${showMenu ? "blurred" : ""}`}>
         <h1>Restaurant Reservation & Ordering Application</h1>
-        <ReservationSystem reservations={reservations} onReserve={handleReservation} />
+        <ReservationSystem
+          reservations={reservations}
+          onReserve={handleReservation}
+          onTableClick={handleTableClick}
+        />
         <TableHistory reservations={reservations} onTableClick={handleTableClick} />
       </div>
       {showMenu && (
