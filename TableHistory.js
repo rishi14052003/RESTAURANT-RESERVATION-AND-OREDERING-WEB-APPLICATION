@@ -1,9 +1,10 @@
+
 import React from 'react';
 
 function TableHistory({ reservations }) {
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-GB'); // dd/mm/yyyy
+    return date.toLocaleDateString('en-GB');
   };
 
   return (
