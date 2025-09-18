@@ -128,13 +128,13 @@ function ReservationSystem({ onReserve }) {
       <br />
 
       <label>
-        From Time:
+        Start Time:
         <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
       </label>
       <br />
 
       <label>
-        Till Time:
+        End Time:
         <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
       </label>
       <br />
