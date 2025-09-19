@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReservationSystem from "./ReservationSystem";
 import OrderSystem from "./OrderSystem";
 import Payment from "./Payment";
-import TableHistory from "./TableHistory";
 import "./App.css";
 
 function App() {
   const [reservedTable, setReservedTable] = useState(null);
-  const [order, setOrder] = useState([]);
+  const [orders, setOrders] = useState({});
   const [reservations, setReservations] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
+  const [reservedNowTables, setReservedNowTables] = useState([]);
+  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const active = reservations.filter((r) => {
+        const start = new Date(`${r.date}T${r.startTime}`);
+        const end = new Date(`${r.date}T${r.endTime}`);
+        return now >= start && now <= end;
+      });
+      const tableNums = active.map((r) => r.tableNumber);
+      setReservedNowTables(tableNums);
+    }, 500);
+    return () => clearInterval(interval);
+  }, [reservations]);
 
   const handleReservation = (reservation) => {
     const overlap = reservations.some((r) => {
@@ -23,9 +38,7 @@ function App() {
       alert("This table is already booked for this time slot.");
       return;
     }
-    setReservedTable(reservation);
     setReservations((prev) => [...prev, reservation]);
-    setShowMenu(true);
   };
 
   const handleTableClick = (reservation) => {
@@ -34,11 +47,19 @@ function App() {
   };
 
   const handleOrderChange = (updatedOrder) => {
-    setOrder(updatedOrder);
+    setOrders((prev) => ({
+      ...prev,
+      [reservedTable.tableNumber]: updatedOrder
+    }));
   };
 
   const handlePayment = () => {
-    setOrder([]);
+    const tableNum = reservedTable?.tableNumber;
+    if (tableNum) {
+      const updatedOrders = { ...orders };
+      delete updatedOrders[tableNum];
+      setOrders(updatedOrders);
+    }
     setReservedTable(null);
     setShowMenu(false);
   };
@@ -49,24 +70,28 @@ function App() {
 
   return (
     <>
-      <div className={`App ${showMenu ? "blurred" : ""}`}>
+      <div className={`App ${showMenu || isReservationModalOpen ? "blurred" : ""}`}>
         <h1>Restaurant Reservation & Ordering Application</h1>
         <ReservationSystem
           reservations={reservations}
           onReserve={handleReservation}
           onTableClick={handleTableClick}
+          reservedNowTables={reservedNowTables}
+          setIsReservationModalOpen={setIsReservationModalOpen}
         />
-        <TableHistory reservations={reservations} onTableClick={handleTableClick} />
       </div>
-      {showMenu && (
+      {showMenu && reservedTable && (
         <div className="modal-overlay">
           <div className="modal-content light-background">
             <OrderSystem
               table={reservedTable}
-              order={order}
+              order={orders[reservedTable.tableNumber] || []}
               onOrderChange={handleOrderChange}
             />
-            <Payment order={order} onPayment={handlePayment} />
+            <Payment
+              order={orders[reservedTable.tableNumber] || []}
+              onPayment={handlePayment}
+            />
             <button onClick={closeMenu} className="close-btn">Back</button>
           </div>
         </div>
