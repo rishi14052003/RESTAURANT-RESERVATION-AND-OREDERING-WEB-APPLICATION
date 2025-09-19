@@ -2,7 +2,7 @@ html, body {
   height: 100%;
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #7bac76;
+  background-color: #F8F8F8;
 }
 
 .App {
@@ -13,10 +13,10 @@ html, body {
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   background: #6ea466;
-  color: white;
+  color: rgb(170, 172, 72);
   padding: 10px 20px;
   font-size: 18px;
   font-weight: bold;
@@ -25,66 +25,46 @@ html, body {
 .table-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
+  gap: 4px;
   justify-items: center;
-  margin-top: 20px;
+  margin-top: 6px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .table-card {
-  background: white;
+  background: rgb(109, 44, 44);
   border-radius: 12px;
-  padding: 15px;
-  width: 150px;
+  padding: 4px;
+  width: 110px;
+  height: 130px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+  box-shadow: 0 4px 8px rgba(214, 90, 90, 0.08);
+  transition: transform 0.12s, box-shadow 0.12s, background-color 0.12s;
   cursor: pointer;
-}
-
-.table-card:hover {
-  background-color: #885f2d;
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .table-card img {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 4px;
   border-radius: 8px;
-  transition: transform 0.3s, box-shadow 0.3s, filter 0.3s;
 }
 
-.table-card img:hover {
-  transform: scale(1.1);
-  filter: brightness(1.2);
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
-}
-
-.reservation-form {
-  margin-top: 30px;
-}
-
-.reservation-form input,
-.reservation-form select,
-.reservation-form button {
-  margin: 8px;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+.table-card p {
+  margin: 4px 0 0;
   font-size: 14px;
 }
 
-.reservation-form button {
-  background: #6ea466;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.reservation-form button:hover {
-  background: #588c52;
+.table-card small {
+  margin-top: 4px;
+  display: block;
+  font-size: 12px;
 }
 
 .blurred {
@@ -98,7 +78,7 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
+  background: rgba(7, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -106,7 +86,7 @@ html, body {
 }
 
 .modal-content {
-  background: #8a4040;
+  background: #6dac75;
   padding: 20px;
   border-radius: 12px;
   width: 500px;
@@ -123,111 +103,86 @@ html, body {
   transition: background 0.3s, box-shadow 0.3s;
 }
 
-.menu-section[open] {
-  background: #ffcccc;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-.menu-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 16px;
-}
-
-.menu-details {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
 .close-btn {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #ff4d4d;
+  background: #0f0101;
   border: none;
   color: white;
   padding: 5px 10px;
   border-radius: 6px;
   cursor: pointer;
-}
-
-.close-btn:hover {
-  background: #e60000;
-}
+} 
 
 .menu-btn {
-  margin-left: 10px;
-  padding: 6px 12px;
-  background: #6ea466;
+  margin-left: 8px;
+  padding: 3px 6px;
+  background: #013611;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 1px;
   cursor: pointer;
-}
-
-.menu-btn:hover {
-  background: #588c52;
 }
 
 .qty-btn {
   margin: 3px;
-  padding: 4px 10px;
-  background: #6ea466;
+  padding: 3px 7px;
+  background: #013611;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
-}
-
-.qty-btn:hover {
-  background: #4d7340;
 }
 
 .payment-section {
-  margin-top: 20px;
+  margin-top: 30px;
   padding: 15px;
   background: #f8f8f8;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
-.payment-section select,
-.payment-section button {
-  margin: 8px;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.payment-section button {
-  background: #6ea466;
-  color: white;
+.back-btn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: #0f0101;
   border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
+  z-index: 1000;
 }
 
-.payment-section button:hover {
-  background: #588c52;
+.reservation-list {
+  padding-left: 30px;
+  margin: 0;
+  list-style-type: decimal;
+  list-style-position: outside;
 }
 
-.history {
-  margin-top: 30px;
+.reservation-item {
+  margin-bottom: 10px;
+}
+
+.reservation-details {
   text-align: left;
-  background: #fff;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.history ul {
-  list-style: none;
-  padding: 0;
+@media (max-width: 900px) {
+  .table-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
 }
 
-.history li {
-  margin-bottom: 8px;
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
+@media (max-width: 600px) {
+  .table-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .modal-content {
+    width: 80%;
+  }
 }
