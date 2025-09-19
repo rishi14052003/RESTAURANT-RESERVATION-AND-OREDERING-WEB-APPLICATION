@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-function OrderSystem({ onOrderChange }) {
-  const [order, setOrder] = useState([]);
-
+function OrderSystem({ table, order, onOrderChange }) {
   const menu = {
     Starters: [
       { name: "panner tikka", price: 5, desc: "panner with green chutney" },
@@ -42,41 +40,30 @@ function OrderSystem({ onOrderChange }) {
   };
 
   const addToOrder = (item) => {
-    setOrder((prev) => {
-      const existing = prev.find((o) => o.name === item.name);
-      let updated;
-      if (existing) {
-        updated = prev.map((o) =>
-          o.name === item.name ? { ...o, qty: o.qty + 1 } : o
-        );
-      } else {
-        updated = [...prev, { ...item, qty: 1 }];
-      }
-      onOrderChange(updated);
-      return updated;
-    });
+    const existing = order.find((o) => o.name === item.name);
+    let updated;
+    if (existing) {
+      updated = order.map((o) =>
+        o.name === item.name ? { ...o, qty: o.qty + 1 } : o
+      );
+    } else {
+      updated = [...order, { ...item, qty: 1 }];
+    }
+    onOrderChange(updated);
   };
 
   const increaseQty = (item) => {
-    setOrder((prev) => {
-      const updated = prev.map((o) =>
-        o.name === item.name ? { ...o, qty: o.qty + 1 } : o
-      );
-      onOrderChange(updated);
-      return updated;
-    });
+    const updated = order.map((o) =>
+      o.name === item.name ? { ...o, qty: o.qty + 1 } : o
+    );
+    onOrderChange(updated);
   };
 
   const decreaseQty = (item) => {
-    setOrder((prev) => {
-      const updated = prev
-        .map((o) =>
-          o.name === item.name ? { ...o, qty: o.qty - 1 } : o
-        )
-        .filter((o) => o.qty > 0);
-      onOrderChange(updated);
-      return updated;
-    });
+    const updated = order
+      .map((o) => (o.name === item.name ? { ...o, qty: o.qty - 1 } : o))
+      .filter((o) => o.qty > 0);
+    onOrderChange(updated);
   };
 
   const total = order.reduce((sum, item) => sum + item.price * item.qty, 0);
@@ -89,9 +76,11 @@ function OrderSystem({ onOrderChange }) {
           <summary>{category}</summary>
           {items.map((item, idx) => (
             <div key={idx} style={{ margin: "5px 0", textAlign: "left" }}>
-              <strong>{item.name}</strong> - ${item.price}
+              <strong>{item.name}-${item.price}</strong><button className="menu-btn" onClick={() => addToOrder(item)}>
+                +
+              </button>
               <p>{item.desc}</p>
-              <button className="menu-btn" onClick={() => addToOrder(item)}>+</button>
+              
             </div>
           ))}
         </details>
@@ -106,8 +95,12 @@ function OrderSystem({ onOrderChange }) {
             <li key={idx}>
               {item.name} (${item.price}) × {item.qty}
               <div>
-                <button className="qty-btn" onClick={() => decreaseQty(item)}><strong>-</strong></button>
-                <button className="qty-btn" onClick={() => increaseQty(item)}><strong>+</strong></button>
+                <button className="qty-btn" onClick={() => decreaseQty(item)}>
+                  <strong>-</strong>
+                </button>
+                <button className="qty-btn" onClick={() => increaseQty(item)}>
+                  <strong>+</strong>
+                </button>
               </div>
             </li>
           ))}
