@@ -1,3 +1,5 @@
+
+
 import React from "react";
 
 function TableHistory({ reservations, onTableClick }) {
@@ -29,3 +31,4 @@ const historyItemStyle = {
 };
 
 export default TableHistory;
+
